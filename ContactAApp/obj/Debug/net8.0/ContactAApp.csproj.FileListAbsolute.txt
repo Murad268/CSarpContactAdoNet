@@ -20,3 +20,4 @@ C:\Users\TechEvo Computers\source\repos\ContactAApp\ContactAApp\obj\Debug\net8.0
 C:\Users\TechEvo Computers\source\repos\ContactAApp\ContactAApp\obj\Debug\net8.0\ContactAApp.pdb
 C:\Users\TechEvo Computers\source\repos\ContactAApp\ContactAApp\obj\Debug\net8.0\ContactAApp.genruntimeconfig.cache
 C:\Users\TechEvo Computers\source\repos\ContactAApp\ContactAApp\obj\Debug\net8.0\ref\ContactAApp.dll
+C:\Users\TechEvo Computers\source\repos\ContactAApp\ContactAApp\obj\Debug\net8.0\ContactAApp.sourcelink.json

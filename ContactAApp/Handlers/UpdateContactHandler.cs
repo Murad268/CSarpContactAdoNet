@@ -7,14 +7,21 @@ namespace ContactAApp.Handlers
     internal class UpdateContactHandler
     {
         private readonly ContactService _contactService;
+        private readonly ViewContactsHandler _viewContactsHandler;
 
-        public UpdateContactHandler(ContactService contactService)
+        public UpdateContactHandler(ContactService contactService, ViewContactsHandler viewContactsHandler)
         {
             _contactService = contactService;
+            _viewContactsHandler = viewContactsHandler;
         }
 
         public void Handle(int userId)
         {
+            if (!_viewContactsHandler.Handle(userId))
+            {
+                return;
+            }
+
             Console.Write("Enter Contact ID to update: ");
             if (!int.TryParse(Console.ReadLine(), out int contactId))
             {

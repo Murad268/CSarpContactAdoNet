@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ContactAApp.Services;
 
 namespace ContactAApp.Handlers
@@ -12,14 +13,14 @@ namespace ContactAApp.Handlers
             _contactService = contactService;
         }
 
-        public void Handle(int userId)
+        public bool Handle(int userId)
         {
             var contacts = _contactService.GetContacts(userId);
 
             if (contacts.Count == 0)
             {
                 Console.WriteLine("Your contact list is empty.");
-                return;
+                return false;
             }
 
             Console.WriteLine("Your Contacts:");
@@ -27,6 +28,8 @@ namespace ContactAApp.Handlers
             {
                 Console.WriteLine($"ID: {contact.Id}, Name: {contact.Name}, Phone: {contact.Phone}");
             }
+
+            return true;
         }
     }
 }

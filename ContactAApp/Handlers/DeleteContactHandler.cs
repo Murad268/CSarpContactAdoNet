@@ -6,14 +6,21 @@ namespace ContactAApp.Handlers
     internal class DeleteContactHandler
     {
         private readonly ContactService _contactService;
+        private readonly ViewContactsHandler _viewContactsHandler;
 
-        public DeleteContactHandler(ContactService contactService)
+        public DeleteContactHandler(ContactService contactService, ViewContactsHandler viewContactsHandler)
         {
             _contactService = contactService;
+            _viewContactsHandler = viewContactsHandler;
         }
 
         public void Handle(int userId)
         {
+            if (!_viewContactsHandler.Handle(userId))
+            {
+                return;
+            }
+
             Console.Write("Enter Contact ID to delete: ");
             if (!int.TryParse(Console.ReadLine(), out int contactId))
             {

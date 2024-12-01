@@ -1,20 +1,32 @@
-﻿using ContactAApp.Controllers;
+﻿using ContactAApp.Handlers;
+using ContactAApp.Services;
 using ContactAApp.Database;
+using ContactAApp.Controllers;
+
 namespace ContactAApp
 {
     internal class Application
     {
         private readonly LoginController _loginController;
         private readonly RegisterController _registerController;
-        private readonly ContactController _contactController;
+        private readonly AddContactHandler _addContactHandler;
+        private readonly ViewContactsHandler _viewContactsHandler;
+        private readonly UpdateContactHandler _updateContactHandler;
+        private readonly DeleteContactHandler _deleteContactHandler;
 
         public Application()
         {
             string connectionString = Database.Database.GetConnectionString();
+            var contactService = new ContactService(connectionString);
             _loginController = new LoginController(connectionString);
             _registerController = new RegisterController(connectionString);
-            _contactController = new ContactController(connectionString);
+
+            _viewContactsHandler = new ViewContactsHandler(contactService);
+            _addContactHandler = new AddContactHandler(contactService);
+            _updateContactHandler = new UpdateContactHandler(contactService, _viewContactsHandler); 
+            _deleteContactHandler = new DeleteContactHandler(contactService, _viewContactsHandler); 
         }
+
 
         public void Run()
         {
@@ -29,16 +41,20 @@ namespace ContactAApp
                     case "1":
                         _registerController.Register();
                         break;
+
                     case "2":
                         var user = _loginController.Login();
                         if (user != null)
                         {
+                            Console.WriteLine($"Welcome, {user.Username}!");
                             UserMenu(user.Id);
                         }
                         break;
+
                     case "3":
                         Console.WriteLine("Exiting program...");
                         return;
+
                     default:
                         Console.WriteLine("Invalid option. Try again.");
                         break;
@@ -57,19 +73,25 @@ namespace ContactAApp
                 switch (option)
                 {
                     case "1":
-                        _contactController.AddContact(userId);
+                        _addContactHandler.Handle(userId);
                         break;
+
                     case "2":
-                        _contactController.ViewContacts(userId);
+                        _viewContactsHandler.Handle(userId);
                         break;
+
                     case "3":
-                        _contactController.UpdateContact(userId);
+                        _updateContactHandler.Handle(userId);
                         break;
+
                     case "4":
-                        _contactController.DeleteContact(userId);
+                        _deleteContactHandler.Handle(userId);
                         break;
+
                     case "5":
+                        Console.WriteLine("Logging out...");
                         return;
+
                     default:
                         Console.WriteLine("Invalid option. Try again.");
                         break;
